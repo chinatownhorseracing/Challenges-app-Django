@@ -20,14 +20,15 @@ monthly_challenges = {
 # Create your views here.
 
 def index(request):
-    challenges = list(monthly_challenges.keys())
-    capitalized_challenges = list(map(str.capitalize, challenges))
-    content = ""
-    base_link_path = reverse("base")
-    for challenge in capitalized_challenges:
-        content += f'<a href="{base_link_path}{challenge.lower()}">{challenge}</a>'
-    container = f'<div style="display: flex; flex-direction: column;">{content}</div>'
-    return HttpResponse(container)
+    list_items = ""
+    months = list(monthly_challenges.keys())
+    for month in months:
+        capitalized_month = month.capitalize()
+        month_path = reverse("month-challenge", args=[month])
+        list_items += f"<li><a href=\"{month_path}\">{capitalized_month}</a></li>"
+    
+    response_data = f"<ul>{list_items}</ul>"
+    return HttpResponse(response_data) 
 
 def monthly_challenge_by_number(request, month):
     months = list(monthly_challenges.keys())
